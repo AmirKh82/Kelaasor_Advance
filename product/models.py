@@ -1,9 +1,12 @@
+"""
+here we have our models of product_app 
+"""
 from django.db import models
-from user.models import User
+from django.conf import settings
 # Create your models here.
 
 
-# .
+# this is our main concept of product
 class Category(models.Model):
     name = models.CharField(max_length=20)
     description = models.TextField(null=True , blank=True)
@@ -17,7 +20,7 @@ class Course(models.Model):
     category = models.ForeignKey(to=Category , on_delete=models.PROTECT)
     title = models.CharField(max_length=20)
     description = models.TextField(null=True , blank=True)
-    teachers = models.ManyToManyField(User)
+    teachers = models.ManyToManyField(settings.AUTH_USER_MODEL)
     base_price = models.IntegerField()
     discount = models.IntegerField()
     final_price = models.IntegerField()
