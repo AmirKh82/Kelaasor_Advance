@@ -7,9 +7,9 @@ from rest_framework.routers import DefaultRouter
 
 
 router = DefaultRouter()
-router.register(r'category-view' , Category_View_Set , basename='category')
+router.register(r'category' , Category_View_Set , basename='category')
 
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('' , include(router.urls)),
     ]

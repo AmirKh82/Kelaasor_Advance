@@ -6,7 +6,6 @@ from product.serializers import Category_Serializers
 from product.models import Category
 from rest_framework import viewsets
 from rest_framework import permissions
-# from rest_framework.renderers import JSONRenderer, BrowsableAPIRenderer
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 # Create your views here.
@@ -23,9 +22,3 @@ class Category_View_Set(viewsets.ModelViewSet):
         if self.request.method in ['POST','PATCH', 'PUT', 'DELETE']:
            return [permissions.IsAdminUser()]
         return [permissions.AllowAny()]
-    
-    # def get_renderers(self):
-    #     """نمایش فقط JSON برای کاربران غیر ادمین"""
-    #     if not self.request.user.is_staff:
-    #         return [JSONRenderer()]
-    #     return [BrowsableAPIRenderer(), JSONRenderer()]
