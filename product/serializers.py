@@ -2,7 +2,7 @@
 here we have our serializers of product_app 
 """
 from rest_framework import serializers
-from .models import Category, Course
+from .models import Category, Course, Chapter, Video, Attachment
 
 
 class Category_Serializers(serializers.ModelSerializer):
@@ -31,4 +31,22 @@ class Course_Serializers(serializers.ModelSerializer):
 
     class Meta:
         model = Course
+        fields = '__all__'
+
+
+class Chapter_Serializers(serializers.ModelSerializer):
+    class Meta:
+        model = Chapter
+        fields = '__all__'
+
+
+class Video_Serializers(serializers.ModelSerializer):
+    class Meta:
+        model = Video
+        fields = '__all__'
+
+
+class Attachment_Serializers(serializers.ModelSerializer):
+    class Meta:
+        model = Attachment
         fields = '__all__'

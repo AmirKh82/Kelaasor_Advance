@@ -2,8 +2,8 @@
 here we have our views of product_app : function of models 
 """
 from django.shortcuts import render
-from product.serializers import Category_Serializers,Course_Serializers
-from product.models import Category,Course
+from product.serializers import Category_Serializers,Course_Serializers,Chapter_Serializers,Video_Serializers,Attachment_Serializers
+from product.models import Category,Course,Chapter,Video,Attachment
 from rest_framework import viewsets
 from rest_framework import permissions
 from django_filters.rest_framework import DjangoFilterBackend
@@ -31,6 +31,20 @@ class Course_View_Set(viewsets.ModelViewSet):
     search_fields = ['category','title','type']
     filterset_fields = ['category','title','description','base_price','type']
     ordering_fields = ['base_price','start_date']
+
+    def get_permissions(self):
+        if self.request.method in ['POST','PATCH','PUT','DELETE']:
+           return [permissions.IsAdminUser()]
+        return [permissions.AllowAny()]
+    
+
+class Chapter_View_Set(viewsets.ModelViewSet):
+    queryset = Chapter.objects.all()
+    serializer_class = Chapter_Serializers
+    filter_backends = [filters.SearchFilter , DjangoFilterBackend , filters.OrderingFilter]
+    search_fields = ['course','title','number']
+    filterset_fields = ['course','title','number']
+    ordering_fields = ['number']
 
     def get_permissions(self):
         if self.request.method in ['POST','PATCH','PUT','DELETE']:

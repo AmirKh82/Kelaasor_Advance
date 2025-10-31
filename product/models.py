@@ -35,28 +35,28 @@ class Course(models.Model):
     end_date = models.DateTimeField()
     class_link = models.URLField(null=True,blank=True)
     # this atr is for offline classes :
-    duration = models.TimeField()
+    duration_date = models.TimeField()
 
 
-# .
+# we have chapters for course
 class Chapter(models.Model):
-    course = models.ForeignKey(Course , on_delete=models.PROTECT)
+    course = models.ForeignKey(Course,on_delete=models.PROTECT)
     title = models.CharField()
     number = models.IntegerField()
 
 
-# .
+# we have videos of chpter
 class Video(models.Model):
-    chapter = models.ForeignKey(Chapter , on_delete=models.PROTECT)
+    chapter = models.ForeignKey(Chapter,on_delete=models.PROTECT)
     title = models.CharField()
     number = models.IntegerField()
-    file = models.FileField(null=True , blank=True)
+    file = models.FileField(upload_to='category/course/chapter/video/',null=True,blank=True)
     duration = models.TimeField()
 
 
-# .
+# we have attachments of chpter
 class Attachment(models.Model):
-    chapter = models.ForeignKey(Chapter , on_delete=models.PROTECT)
+    chapter = models.ForeignKey(Chapter,on_delete=models.PROTECT)
     title = models.CharField()
     number = models.IntegerField()
-    file = models.FileField(null=True , blank=True)
+    file = models.FileField(upload_to='category/course/chapter/attachment/',null=True,blank=True)
