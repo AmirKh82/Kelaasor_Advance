@@ -50,3 +50,31 @@ class Chapter_View_Set(viewsets.ModelViewSet):
         if self.request.method in ['POST','PATCH','PUT','DELETE']:
            return [permissions.IsAdminUser()]
         return [permissions.AllowAny()]
+    
+
+class Video_View_Set(viewsets.ModelViewSet):
+    queryset = Video.objects.all()
+    serializer_class = Video_Serializers
+    filter_backends = [filters.SearchFilter , DjangoFilterBackend , filters.OrderingFilter]
+    search_fields = ['chapter','title','number']
+    filterset_fields = ['chapter','title','number']
+    ordering_fields = ['number']
+
+    def get_permissions(self):
+        if self.request.method in ['POST','PATCH','PUT','DELETE']:
+           return [permissions.IsAdminUser()]
+        return [permissions.AllowAny()]
+    
+
+class Attachment_View_Set(viewsets.ModelViewSet):
+    queryset = Attachment.objects.all()
+    serializer_class = Attachment_Serializers
+    filter_backends = [filters.SearchFilter , DjangoFilterBackend , filters.OrderingFilter]
+    search_fields = ['chapter','title','number']
+    filterset_fields = ['chapter','title','number']
+    ordering_fields = ['number']
+
+    def get_permissions(self):
+        if self.request.method in ['POST','PATCH','PUT','DELETE']:
+           return [permissions.IsAdminUser()]
+        return [permissions.AllowAny()]
