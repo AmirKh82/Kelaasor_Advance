@@ -9,17 +9,17 @@ from django.conf import settings
 # this is our main concept of product
 class Category(models.Model):
     name = models.CharField(max_length=20)
-    description = models.TextField(null=True , blank=True)
+    description = models.TextField(null=True,blank=True)
     
     def __str__(self):
         return self.name
 
 
-# .
+# here we have courses of our main concept : it has two type : online and offline
 class Course(models.Model):
-    category = models.ForeignKey(to=Category , on_delete=models.PROTECT)
+    category = models.ForeignKey(to=Category,on_delete=models.PROTECT)
     title = models.CharField(max_length=20)
-    description = models.TextField(null=True , blank=True)
+    description = models.TextField(null=True,blank=True)
     teachers = models.ManyToManyField(settings.AUTH_USER_MODEL)
     base_price = models.IntegerField()
     discount = models.IntegerField()
@@ -28,13 +28,13 @@ class Course(models.Model):
         max_length=20,
         choices=[
         ("online" , "online"),
-        ("offline" ,"offfline")])
+        ("offline","offfline")])
     activate = models.BooleanField()
-    # .
+    # this atrs are for online classes :
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
-    class_link = models.URLField(null=True , blank=True)
-    # .
+    class_link = models.URLField(null=True,blank=True)
+    # this atr is for offline classes :
     duration = models.TimeField()
 
 
