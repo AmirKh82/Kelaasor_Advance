@@ -1,5 +1,5 @@
 """
-here we are Personalizing admin panel based on models for the admin 
+here we are Customizing admin panel based on models for the admin 
 """
 from django.contrib import admin
 from product.models import Category , Course, Chapter, Video, Attachment

@@ -4,6 +4,8 @@ here we have our serializers of product_app
 from rest_framework import serializers
 from .models import Category, Course, Chapter, Video, Attachment
 from user.serializers import FlexibleUserField, UserShortSerializer
+from django.contrib.auth import get_user_model
+
 
 
 class Category_Serializers(serializers.ModelSerializer):
@@ -98,8 +100,8 @@ class Chapter_Serializers(serializers.ModelSerializer):
 class Course_Serializers(serializers.ModelSerializer):
     category = FlexibleCategoryField(queryset=Category.objects.all())
     category_name = serializers.CharField(source='category.name', read_only=True)
-    teachers = FlexibleUserField(queryset=Course.teachers.rel.model.objects.all(), many=True)
-    teachers_info = UserShortSerializer(source='teachers', many=True, read_only=True)
+    teachers = FlexibleUserField(queryset=get_user_model().objects.all(), many=True)
+    teachers_names = serializers.SerializerMethodField(read_only=True)
     chapters = Chapter_Serializers(many=True, read_only=True)
     discount_display = serializers.SerializerMethodField(read_only=True)
 
@@ -140,3 +142,6 @@ class Course_Serializers(serializers.ModelSerializer):
             return f"{obj.discount:,} Rial off"
         return "No discount"
     
+
+    def get_teachers_names(self, obj):
+        return [t.username for t in obj.teachers.all()]
