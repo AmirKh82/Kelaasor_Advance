@@ -4,7 +4,10 @@ here we are Personalizing admin panel based on models for the admin
 from django.contrib import admin
 from product.models import Category , Course, Chapter, Video, Attachment
 from django.contrib.admin import RelatedOnlyFieldListFilter
+from django.contrib.auth import get_user_model
 # Register your models here.
+
+User = get_user_model()
 
 
 class Category_Admin(admin.ModelAdmin):
@@ -16,10 +19,11 @@ class Course_Admin(admin.ModelAdmin):
     list_display = ['category__name','title','show_teachers','final_price','type','activate','start_date','end_date','duration_time']
     search_fields = ['category__name','title','description','type','activate','start_date']
     list_filter = [('category__name', RelatedOnlyFieldListFilter),'title','description','final_price','type', 'activate','start_date']
-
+    autocomplete_fields = ['teachers']
+    
     def show_teachers(self, obj):
-        return ", ".join([teacher.username for teacher in obj.teachers.all()])
-    show_teachers.short_description = "teachers"
+        return ", ".join([t.username for t in obj.teachers.all()])
+    show_teachers.short_description = "Teachers"
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
