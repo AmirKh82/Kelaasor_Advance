@@ -28,8 +28,8 @@ class Course_View_Set(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = Course_Serializers
     filter_backends = [filters.SearchFilter , DjangoFilterBackend , filters.OrderingFilter]
-    search_fields = ['category','title','type']
-    filterset_fields = ['category','title','description','base_price','type']
+    search_fields = ['category__name','title','type']
+    filterset_fields = ['category__name','title','description','base_price','type']
     ordering_fields = ['base_price','start_date']
 
     def get_permissions(self):
