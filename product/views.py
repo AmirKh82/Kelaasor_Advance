@@ -4,10 +4,8 @@ here we have our views of product_app : function of models
 from django.shortcuts import render
 from product.serializers import Category_Serializers,Course_Serializers,Chapter_Serializers,Video_Serializers,Attachment_Serializers
 from product.models import Category,Course,Chapter,Video,Attachment
-from rest_framework import viewsets
-from rest_framework import permissions
+from rest_framework import viewsets,permissions,filters
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters
 # Create your views here.
 
 

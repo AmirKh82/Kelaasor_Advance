@@ -3,7 +3,7 @@ here we have our serializers of product_app
 """
 from rest_framework import serializers
 from .models import Category, Course, Chapter, Video, Attachment
-from user.serializers import FlexibleUserField, UserShortSerializer
+from user.serializers import FlexibleUserField
 from django.contrib.auth import get_user_model
 
 
@@ -110,6 +110,16 @@ class Course_Serializers(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ['final_price']
 
+    def get_teachers_names(self, obj):
+        return [t.username for t in obj.teachers.all()]
+
+    def get_discount_display(self, obj):
+        if obj.discount_type == 'percent':
+            return f"{obj.discount}% off"
+        elif obj.discount_type == 'amount':
+            return f"{obj.discount:,} Rial off"
+        return "No discount"
+
     def validate(self, data):
         """
         Validate logic for online/offline course types:
@@ -124,7 +134,6 @@ class Course_Serializers(serializers.ModelSerializer):
             end_date = data.get('end_date') or getattr(self.instance, 'end_date', None)
             if not start_date or not end_date:
                 raise serializers.ValidationError("Online courses must have start_date and end_date.")
-            
         elif course_type == "offline":
             duration_time = data.get('duration_time') or getattr(self.instance, 'duration_time', None)
             if not duration_time:
@@ -132,16 +141,3 @@ class Course_Serializers(serializers.ModelSerializer):
             if data.get('start_date') or data.get('end_date'):
                 raise serializers.ValidationError("Offline courses cannot have start_date or end_date.")
         return data
-    
-
-
-    def get_discount_display(self, obj):
-        if obj.discount_type == 'percent':
-            return f"{obj.discount}% off"
-        elif obj.discount_type == 'amount':
-            return f"{obj.discount:,} Rial off"
-        return "No discount"
-    
-
-    def get_teachers_names(self, obj):
-        return [t.username for t in obj.teachers.all()]

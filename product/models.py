@@ -20,7 +20,7 @@ class Course(models.Model):
     category = models.ForeignKey(to=Category,on_delete=models.PROTECT)
     title = models.CharField(max_length=20)
     description = models.TextField(null=True,blank=True)
-    teachers = models.ManyToManyField(settings.AUTH_USER_MODEL)
+    teachers = models.ManyToManyField(settings.AUTH_USER_MODEL,related_name='courses')
     base_price = models.IntegerField()
     discount_type = models.CharField(
         max_length=20,
