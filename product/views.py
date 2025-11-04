@@ -40,8 +40,8 @@ class Chapter_View_Set(viewsets.ModelViewSet):
     queryset = Chapter.objects.all()
     serializer_class = Chapter_Serializers
     filter_backends = [filters.SearchFilter , DjangoFilterBackend , filters.OrderingFilter]
-    search_fields = ['course','title','number']
-    filterset_fields = ['course','title','number']
+    search_fields = ['course__title','title','number']
+    filterset_fields = ['course__title','title','number']
     ordering_fields = ['number']
 
     def get_permissions(self):
@@ -54,8 +54,8 @@ class Video_View_Set(viewsets.ModelViewSet):
     queryset = Video.objects.all()
     serializer_class = Video_Serializers
     filter_backends = [filters.SearchFilter , DjangoFilterBackend , filters.OrderingFilter]
-    search_fields = ['chapter','title','number']
-    filterset_fields = ['chapter','title','number']
+    search_fields = ['chapter__title','chapter__number','title','number']
+    filterset_fields = ['chapter__title','chapter__number','title','number']
     ordering_fields = ['number']
 
     def get_permissions(self):
@@ -68,8 +68,8 @@ class Attachment_View_Set(viewsets.ModelViewSet):
     queryset = Attachment.objects.all()
     serializer_class = Attachment_Serializers
     filter_backends = [filters.SearchFilter , DjangoFilterBackend , filters.OrderingFilter]
-    search_fields = ['chapter','title','number']
-    filterset_fields = ['chapter','title','number']
+    search_fields = ['chapter__title','chapter__number','title','number']
+    filterset_fields = ['chapter__title','chapter__number','title','number']
     ordering_fields = ['number']
 
     def get_permissions(self):

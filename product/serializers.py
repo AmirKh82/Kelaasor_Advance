@@ -3,73 +3,27 @@ here we have our serializers of product_app
 """
 from rest_framework import serializers
 from .models import Category, Course, Chapter, Video, Attachment
-from user.serializers import FlexibleUserField
+from common.fields import Flexible_User_Field,Flexible_Category_Field,Flexible_Course_Field,Flexible_Chapter_Field
 from django.contrib.auth import get_user_model
 
 
 
+class Category_Course_Serializer(serializers.ModelSerializer):
+    class Meta:
+        model = Course
+        fields = ['id','title','type','final_price','activate']
+        read_only_fields = fields
+
+
 class Category_Serializers(serializers.ModelSerializer):
+    courses = Category_Course_Serializer(many=True, read_only=True)
     class Meta:
         model = Category
-        fields = '__all__'
-
-
-class FlexibleCategoryField(serializers.PrimaryKeyRelatedField):
-    """
-    admin can work with both id or name    
-    """
-    def to_internal_value(self, data):
-        # (id)
-        try:
-            return super().to_internal_value(data)
-        except (TypeError, ValueError):
-            pass
-
-        # (name)
-        try:
-            return self.get_queryset().get(name=data)
-        except Category.DoesNotExist:
-            raise serializers.ValidationError(f"Category '{data}' not found.")
-
-
-class FlexibleCourseField(serializers.PrimaryKeyRelatedField):
-    """
-    admin can work with both id or name
-    """
-    def to_internal_value(self, data):
-        # (id)
-        try:
-            return super().to_internal_value(data)
-        except (TypeError, ValueError):
-            pass
-
-        # (name)
-        try:
-            return self.get_queryset().get(title=data)
-        except Course.DoesNotExist:
-            raise serializers.ValidationError(f"Course '{data}' not found.")
-
-
-class FlexibleChapterField(serializers.PrimaryKeyRelatedField):
-    """
-    admin can work with both id or name
-    """
-    def to_internal_value(self, data):
-        # (id)
-        try:
-            return super().to_internal_value(data)
-        except (TypeError, ValueError):
-            pass
-
-        # (name)
-        try:
-            return self.get_queryset().get(title=data)
-        except Chapter.DoesNotExist:
-            raise serializers.ValidationError(f"Chapter '{data}' not found.")
+        fields = ['id', 'name', 'description', 'courses']
 
 
 class Video_Serializers(serializers.ModelSerializer):
-    chapter = FlexibleChapterField(queryset=Chapter.objects.all())
+    chapter = Flexible_Chapter_Field(queryset=Chapter.objects.all())
     chapter_name = serializers.CharField(source='chapter.title', read_only=True)
 
     class Meta:
@@ -78,7 +32,7 @@ class Video_Serializers(serializers.ModelSerializer):
 
 
 class Attachment_Serializers(serializers.ModelSerializer):
-    chapter = FlexibleChapterField(queryset=Chapter.objects.all())
+    chapter = Flexible_Chapter_Field(queryset=Chapter.objects.all())
     chapter_name = serializers.CharField(source='chapter.title', read_only=True)
 
     class Meta:
@@ -87,7 +41,7 @@ class Attachment_Serializers(serializers.ModelSerializer):
 
 
 class Chapter_Serializers(serializers.ModelSerializer):
-    course = FlexibleCourseField(queryset=Course.objects.all())
+    course = Flexible_Course_Field(queryset=Course.objects.all())
     course_title = serializers.CharField(source='course.title', read_only=True)
     videos = Video_Serializers(many=True, read_only=True)
     attachments = Attachment_Serializers(many=True, read_only=True)
@@ -98,9 +52,9 @@ class Chapter_Serializers(serializers.ModelSerializer):
 
 
 class Course_Serializers(serializers.ModelSerializer):
-    category = FlexibleCategoryField(queryset=Category.objects.all())
+    category = Flexible_Category_Field(queryset=Category.objects.all())
     category_name = serializers.CharField(source='category.name', read_only=True)
-    teachers = FlexibleUserField(queryset=get_user_model().objects.all(), many=True)
+    teachers = Flexible_User_Field(queryset=get_user_model().objects.all(), many=True)
     teachers_names = serializers.SerializerMethodField(read_only=True)
     chapters = Chapter_Serializers(many=True, read_only=True)
     discount_display = serializers.SerializerMethodField(read_only=True)

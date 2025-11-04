@@ -14,12 +14,13 @@ class Category_Admin(admin.ModelAdmin):
     list_display = ['name']
     search_fields = ['name','description']
     list_filter = ['name']
+    ordering = ['name']
 
 class Course_Admin(admin.ModelAdmin):
     list_display = ['category__name','title','show_teachers','final_price','type','activate','start_date','end_date','duration_time']
     search_fields = ['category__name','title','description','type','activate','start_date']
     list_filter = [('category', RelatedOnlyFieldListFilter),'title','description','final_price','type', 'activate','start_date']
-    ordering = ['title','final_price','activate']
+    ordering = ['title','-final_price','activate']
     # autocomplete_fields = ['teachers']
     filter_horizontal = ('teachers',)
 
@@ -37,16 +38,19 @@ class Chapter_Admin(admin.ModelAdmin):
     list_display = ['course__title','title','number']
     search_fields = ['course__title','title','number']
     list_filter = [('course', RelatedOnlyFieldListFilter),'title','number']
+    ordering = ['title','-number']
 
 class Video_Admin(admin.ModelAdmin):
     list_display = ['chapter__title','title','number']
     search_fields = ['chapter__title','title','number']
     list_filter = [('chapter', RelatedOnlyFieldListFilter),'title','number']
+    ordering = ['title','-number']
 
 class Attachment_Admin(admin.ModelAdmin):
     list_display = ['chapter__title','title','number']
     search_fields = ['chapter__title','title','number']
     list_filter = [('chapter', RelatedOnlyFieldListFilter),'title','number']
+    ordering = ['title','-number']
 
 
 admin.site.register(Category,Category_Admin)

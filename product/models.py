@@ -10,6 +10,10 @@ from django.conf import settings
 class Category(models.Model):
     name = models.CharField(max_length=20)
     description = models.TextField(null=True,blank=True)
+
+    class Meta:
+        ordering = ['name']
+    
     
     def __str__(self):
         return self.name
@@ -17,7 +21,7 @@ class Category(models.Model):
 
 # here we have courses of our main concept : it has two type : online and offline
 class Course(models.Model):
-    category = models.ForeignKey(to=Category,on_delete=models.PROTECT)
+    category = models.ForeignKey(Category,on_delete=models.PROTECT,related_name='courses')
     title = models.CharField(max_length=20)
     description = models.TextField(null=True,blank=True)
     teachers = models.ManyToManyField(settings.AUTH_USER_MODEL,related_name='courses')
@@ -46,6 +50,11 @@ class Course(models.Model):
     # this atr is for offline classes :
     duration_time = models.DurationField(null=True,blank=True)
 
+
+    class Meta:
+        ordering = ['title','-final_price','type','activate']
+
+
     def __str__(self):
         return self.title
     
@@ -73,6 +82,9 @@ class Chapter(models.Model):
     title = models.CharField(max_length=20)
     number = models.IntegerField()
 
+    class Meta:
+        ordering = ['title','-number']
+
 
 # we have videos of chpter
 class Video(models.Model):
@@ -82,6 +94,9 @@ class Video(models.Model):
     file = models.FileField(upload_to='category/course/chapter/video/',null=True,blank=True)
     duration = models.TimeField()
 
+    class Meta:
+        ordering = ['title','-number']
+
 
 # we have attachments of chpter
 class Attachment(models.Model):
@@ -89,3 +104,6 @@ class Attachment(models.Model):
     title = models.CharField(max_length=20)
     number = models.IntegerField()
     file = models.FileField(upload_to='category/course/chapter/attachment/',null=True,blank=True)
+
+    class Meta:
+        ordering = ['title','-number']
