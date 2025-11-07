@@ -6,20 +6,21 @@ from django.conf import settings
 # Create your models here.
 
 
-# this is our main concept of product
+# this is our main concept of product :
 class Category(models.Model):
     name = models.CharField(max_length=20)
     description = models.TextField(null=True,blank=True)
 
+
     class Meta:
         ordering = ['name']
     
-    
+
     def __str__(self):
         return self.name
 
 
-# here we have courses of our main concept : it has two type : online and offline
+# here we have courses of our main concept , it has two types : (online and offline) :
 class Course(models.Model):
     category = models.ForeignKey(Category,on_delete=models.PROTECT,related_name='courses')
     title = models.CharField(max_length=20)
@@ -76,7 +77,7 @@ class Course(models.Model):
     
 
 
-# we have chapters for course
+# we have chapters for course (course can have many chapters) :
 class Chapter(models.Model):
     course = models.ForeignKey(Course,on_delete=models.PROTECT, related_name='chapters')
     title = models.CharField(max_length=20)
@@ -86,7 +87,7 @@ class Chapter(models.Model):
         ordering = ['title','-number']
 
 
-# we have videos of chpter
+# we have videos of chpter :
 class Video(models.Model):
     chapter = models.ForeignKey(Chapter,on_delete=models.PROTECT, related_name='videos')
     title = models.CharField(max_length=20)
@@ -98,7 +99,7 @@ class Video(models.Model):
         ordering = ['title','-number']
 
 
-# we have attachments of chpter
+# we have attachments of chpter :
 class Attachment(models.Model):
     chapter = models.ForeignKey(Chapter,on_delete=models.PROTECT, related_name='attachments')
     title = models.CharField(max_length=20)

@@ -9,6 +9,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 # Create your views here.
 
 
+# view for category :
 class Category_View_Set(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = Category_Serializers
@@ -21,7 +22,8 @@ class Category_View_Set(viewsets.ModelViewSet):
            return [permissions.IsAdminUser()]
         return [permissions.AllowAny()]
     
-
+    
+# view for course :
 class Course_View_Set(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = Course_Serializers
@@ -36,6 +38,7 @@ class Course_View_Set(viewsets.ModelViewSet):
         return [permissions.AllowAny()]
     
 
+# view for chapter :
 class Chapter_View_Set(viewsets.ModelViewSet):
     queryset = Chapter.objects.all()
     serializer_class = Chapter_Serializers
@@ -50,6 +53,7 @@ class Chapter_View_Set(viewsets.ModelViewSet):
         return [permissions.AllowAny()]
     
 
+# view for video :
 class Video_View_Set(viewsets.ModelViewSet):
     queryset = Video.objects.all()
     serializer_class = Video_Serializers
@@ -64,6 +68,7 @@ class Video_View_Set(viewsets.ModelViewSet):
         return [permissions.AllowAny()]
     
 
+# view for attachment :
 class Attachment_View_Set(viewsets.ModelViewSet):
     queryset = Attachment.objects.all()
     serializer_class = Attachment_Serializers

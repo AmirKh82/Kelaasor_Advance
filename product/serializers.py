@@ -7,21 +7,25 @@ from common.fields import Flexible_User_Field,Flexible_Category_Field,Flexible_C
 from django.contrib.auth import get_user_model
 
 
-
+# course serializers (just) for category_seriakizers :
 class Category_Course_Serializer(serializers.ModelSerializer):
+
     class Meta:
         model = Course
         fields = ['id','title','type','final_price','activate']
         read_only_fields = fields
 
 
+# category serializers :
 class Category_Serializers(serializers.ModelSerializer):
     courses = Category_Course_Serializer(many=True, read_only=True)
+
     class Meta:
         model = Category
         fields = ['id', 'name', 'description', 'courses']
 
 
+# video serializers :
 class Video_Serializers(serializers.ModelSerializer):
     chapter = Flexible_Chapter_Field(queryset=Chapter.objects.all())
     chapter_name = serializers.CharField(source='chapter.title', read_only=True)
@@ -31,6 +35,7 @@ class Video_Serializers(serializers.ModelSerializer):
         fields = '__all__'
 
 
+# attachment serializers :
 class Attachment_Serializers(serializers.ModelSerializer):
     chapter = Flexible_Chapter_Field(queryset=Chapter.objects.all())
     chapter_name = serializers.CharField(source='chapter.title', read_only=True)
@@ -40,6 +45,7 @@ class Attachment_Serializers(serializers.ModelSerializer):
         fields = '__all__'
 
 
+# chapter serializers :
 class Chapter_Serializers(serializers.ModelSerializer):
     course = Flexible_Course_Field(queryset=Course.objects.all())
     course_title = serializers.CharField(source='course.title', read_only=True)
@@ -51,6 +57,7 @@ class Chapter_Serializers(serializers.ModelSerializer):
         fields = '__all__'
 
 
+# course serializers :
 class Course_Serializers(serializers.ModelSerializer):
     category = Flexible_Category_Field(queryset=Category.objects.all())
     category_name = serializers.CharField(source='category.name', read_only=True)
@@ -64,9 +71,13 @@ class Course_Serializers(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ['final_price']
 
+
+    # this function shows teachers names :
     def get_teachers_names(self, obj):
         return [t.username for t in obj.teachers.all()]
+    
 
+    # this function shows discount :
     def get_discount_display(self, obj):
         if obj.discount_type == 'percent':
             return f"{obj.discount}% off"
@@ -74,6 +85,8 @@ class Course_Serializers(serializers.ModelSerializer):
             return f"{obj.discount:,} Rial off"
         return "No discount"
 
+
+    # this function check validtion for course :
     def validate(self, data):
         """
         Validate logic for online/offline course types:
