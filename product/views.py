@@ -6,7 +6,9 @@ from product.serializers import Category_Serializers,Course_Serializers,Chapter_
 from product.models import Category,Course,Chapter,Video,Attachment
 from rest_framework import viewsets,permissions,filters
 from django_filters.rest_framework import DjangoFilterBackend
+from user.permissioms import Is_Admin_Support, Is_Educational_Support
 # Create your views here.
+
 
 
 # view for category :
@@ -17,26 +19,30 @@ class Category_View_Set(viewsets.ModelViewSet):
     search_fields = ['name']
     filterset_fields = ['name','description']
 
+    # this func check permissions for user to get access :
     def get_permissions(self):
-        if self.request.method in ['POST','PATCH','PUT','DELETE']:
-           return [permissions.IsAdminUser()]
+        if self.action in ['create', 'update', 'partial_update', 'destroy']:
+           return [Is_Admin_Support() | Is_Educational_Support()]
         return [permissions.AllowAny()]
-    
+
+
     
 # view for course :
 class Course_View_Set(viewsets.ModelViewSet):
-    queryset = Course.objects.all()
+    queryset = Course.objects.filter(is_active=True)
     serializer_class = Course_Serializers
     filter_backends = [filters.SearchFilter , DjangoFilterBackend , filters.OrderingFilter]
     search_fields = ['category__name','title','type']
     filterset_fields = ['category__name','title','description','base_price','type']
     ordering_fields = ['base_price','start_date']
 
+    # this func check permissions for user to get access :
     def get_permissions(self):
-        if self.request.method in ['POST','PATCH','PUT','DELETE']:
-           return [permissions.IsAdminUser()]
+        if self.action in ['create', 'update', 'partial_update', 'destroy']:
+           return [Is_Admin_Support() | Is_Educational_Support()]
         return [permissions.AllowAny()]
-    
+
+
 
 # view for chapter :
 class Chapter_View_Set(viewsets.ModelViewSet):
@@ -47,11 +53,13 @@ class Chapter_View_Set(viewsets.ModelViewSet):
     filterset_fields = ['course__title','title','number']
     ordering_fields = ['number']
 
+    # this func check permissions for user to get access :
     def get_permissions(self):
-        if self.request.method in ['POST','PATCH','PUT','DELETE']:
-           return [permissions.IsAdminUser()]
-        return [permissions.AllowAny()]
-    
+        if self.action in ['create', 'update', 'partial_update', 'destroy']:
+            return [Is_Admin_Support() | Is_Educational_Support()]
+        return [permissions.IsAuthenticated()]
+
+
 
 # view for video :
 class Video_View_Set(viewsets.ModelViewSet):
@@ -62,11 +70,18 @@ class Video_View_Set(viewsets.ModelViewSet):
     filterset_fields = ['chapter__title','chapter__number','title','number']
     ordering_fields = ['number']
 
+    # def get_permissions(self):
+    #     if self.request.method in ['POST','PATCH','PUT','DELETE']:
+    #        return [permissions.IsAdminUser()]
+    #     return [permissions.AllowAny()]
+
+    # this func check permissions for user to get access :
     def get_permissions(self):
-        if self.request.method in ['POST','PATCH','PUT','DELETE']:
-           return [permissions.IsAdminUser()]
-        return [permissions.AllowAny()]
+        if self.action in ['create', 'update', 'partial_update', 'destroy']:
+            return [Is_Admin_Support() | Is_Educational_Support()]
+        return [permissions.IsAuthenticated()]
     
+
 
 # view for attachment :
 class Attachment_View_Set(viewsets.ModelViewSet):
@@ -77,7 +92,8 @@ class Attachment_View_Set(viewsets.ModelViewSet):
     filterset_fields = ['chapter__title','chapter__number','title','number']
     ordering_fields = ['number']
 
+    # this func check permissions for user to get access :
     def get_permissions(self):
-        if self.request.method in ['POST','PATCH','PUT','DELETE']:
-           return [permissions.IsAdminUser()]
-        return [permissions.AllowAny()]
+        if self.action in ['create', 'update', 'partial_update', 'destroy']:
+            return [Is_Admin_Support() | Is_Educational_Support()]
+        return [permissions.IsAuthenticated()]

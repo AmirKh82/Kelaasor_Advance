@@ -1,0 +1,535 @@
+{
+  "info": {
+    "name": "Kelaasor Advance API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register Step 1 - Send Phone",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"phone_number\": \"09123456789\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/register/step1/",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "register", "step1", ""]
+            }
+          }
+        },
+        {
+          "name": "Verify OTP",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"phone_number\": \"09123456789\",\n    \"code\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/verify-otp/",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "verify-otp", ""]
+            }
+          }
+        },
+        {
+          "name": "Register Step 2 - Complete Info",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"first_name\": \"Ali\",\n    \"last_name\": \"Mohammadi\",\n    \"personal_id\": \"0012345678\",\n    \"username\": \"alimohammadi\",\n    \"password\": \"Test@1234\",\n    \"password2\": \"Test@1234\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/register/step2/",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "register", "step2", ""]
+            }
+          }
+        },
+        {
+          "name": "Get Token (Login)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"alimohammadi\",\n    \"password\": \"Test@1234\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/token/",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "token", ""]
+            }
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"refresh\": \"{{refresh_token}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/token/refresh/",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "token", "refresh", ""]
+            }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"refresh_token\": \"{{refresh_token}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/logout/",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "logout", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "📊 Dashboard",
+      "item": [
+        {
+          "name": "Get Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/dashboard/",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "dashboard", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🛒 Basket",
+      "item": [
+        {
+          "name": "Add Course to Basket",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"course_id\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/basket/add/",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "basket", "add", ""]
+            }
+          }
+        },
+        {
+          "name": "Remove Course from Basket",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/basket/remove/1/",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "basket", "remove", "1", ""]
+            }
+          }
+        },
+        {
+          "name": "Apply Discount Code",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"basket_item_id\": 1,\n    \"code\": \"DISCOUNT20\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/basket/apply-discount/",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "basket", "apply-discount", ""]
+            }
+          }
+        },
+        {
+          "name": "Checkout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/checkout/",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "checkout", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "💰 Wallet",
+      "item": [
+        {
+          "name": "Charge Wallet",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"amount\": 50000\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/wallet/charge/",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "wallet", "charge", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🎫 Tickets",
+      "item": [
+        {
+          "name": "Create Ticket",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"Payment Issue\",\n    \"message\": \"I have problem with payment\",\n    \"department\": \"finance\",\n    \"related_course\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/ticket/create/",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "ticket", "create", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "👥 Group Registration",
+      "item": [
+        {
+          "name": "Register Group",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"course_id\": 1,\n    \"members\": [\n        {\n            \"first_name\": \"Reza\",\n            \"last_name\": \"Ahmadi\",\n            \"phone_number\": \"09129876543\",\n            \"national_code\": \"0023456789\"\n        }\n    ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/group/register/",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "group", "register", ""]
+            }
+          }
+        },
+        {
+          "name": "Get My Groups",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/my-groups/",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "my-groups", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "📚 Products",
+      "item": [
+        {
+          "name": "Get Categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/product/categories/",
+              "host": ["{{base_url}}"],
+              "path": ["product", "categories", ""]
+            }
+          }
+        },
+        {
+          "name": "Get Courses",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/product/courses/",
+              "host": ["{{base_url}}"],
+              "path": ["product", "courses", ""]
+            }
+          }
+        },
+        {
+          "name": "Get Course by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/product/courses/1/",
+              "host": ["{{base_url}}"],
+              "path": ["product", "courses", "1", ""]
+            }
+          }
+        },
+        {
+          "name": "Search Courses",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/product/courses/?search=django",
+              "host": ["{{base_url}}"],
+              "path": ["product", "courses", ""],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "django"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Filter Courses by Type",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/product/courses/?type=online",
+              "host": ["{{base_url}}"],
+              "path": ["product", "courses", ""],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "online"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "👑 Management",
+      "item": [
+        {
+          "name": "Get Tickets (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/management/tickets/",
+              "host": ["{{base_url}}"],
+              "path": ["management", "tickets", ""]
+            }
+          }
+        },
+        {
+          "name": "Reply to Ticket",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"message\": \"Your issue has been resolved\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/management/tickets/1/reply/",
+              "host": ["{{base_url}}"],
+              "path": ["management", "tickets", "1", "reply", ""]
+            }
+          }
+        },
+        {
+          "name": "Get Discount Codes",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/management/discount-codes/",
+              "host": ["{{base_url}}"],
+              "path": ["management", "discount-codes", ""]
+            }
+          }
+        },
+        {
+          "name": "Create Discount Code",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"code\": \"SUMMER50\",\n    \"discount_type\": \"percent\",\n    \"value\": 50,\n    \"usage_type\": \"multiple\",\n    \"scope\": \"general\",\n    \"valid_from\": \"2024-06-01T00:00:00Z\",\n    \"valid_to\": \"2024-08-31T23:59:59Z\",\n    \"max_usage\": 100\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/management/discount-codes/",
+              "host": ["{{base_url}}"],
+              "path": ["management", "discount-codes", ""]
+            }
+          }
+        },
+        {
+          "name": "Add User to Course (Manual)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"user_id\": 2\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/management/courses/1/add_user/",
+              "host": ["{{base_url}}"],
+              "path": ["management", "courses", "1", "add_user", ""]
+            }
+          }
+        },
+        {
+          "name": "Remove User from Course",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"user_id\": 2\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/management/courses/1/remove_user/",
+              "host": ["{{base_url}}"],
+              "path": ["management", "courses", "1", "remove_user", ""]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000"
+    },
+    {
+      "key": "access_token",
+      "value": "your_access_token_here"
+    },
+    {
+      "key": "refresh_token",
+      "value": "your_refresh_token_here"
+    },
+    {
+      "key": "admin_token",
+      "value": "admin_access_token_here"
+    }
+  ]
+}
